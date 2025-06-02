@@ -25,6 +25,17 @@ output: distill::distill_article
 -   Submission format is HTML. Other formats will lead to a deduction of
     points.
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  max.print = 10,
+  echo = TRUE
+)
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+if (!require("easystats")) install.packages("easystats")
+library(easystats)
+```
+
 ## Exercise 1: Initializing git (4 Points)
 
 For this whole exercise sheet we will be tracking all our changes to it
