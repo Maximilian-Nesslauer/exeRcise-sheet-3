@@ -204,6 +204,30 @@ c)  Load the `public_response` dataframe into R. Convert the
     highest score. Combine `public_response` with the `pixar_films`
     dataset using an appropriate merge variable.
 
+```{r exercise-3c}
+# Load public_response dataset
+public_response <- read_csv("data/public_response.csv")
+
+# Inspect unique values of cinema_score
+unique(public_response$cinema_score)
+
+# Convert cinema_score to ordered factor (ascending order)
+public_response <- public_response %>%
+  mutate(cinema_score_factor = factor(cinema_score,
+                                      levels = c("A-", "A", "A+", "NA"),
+                                      ordered = TRUE))
+
+# Check the factor levels
+levels(public_response$cinema_score_factor)
+
+# Combine public_response with pixar_films_clean using film as merge variable
+pixar_combined <- pixar_films_clean %>%
+  left_join(public_response, by = "film")
+
+# Display structure and first few rows to verify merge
+head(pixar_combined)
+```
+
 d)  Choose one of the variables representing the public response and
     create a bar plot for the films belonging to a series. Here are the
     details of the plot:
