@@ -106,7 +106,48 @@ a)  Load the `pixar_films` dataset into R. Clean the dataset by removing
     the possible values and what do they mean? Create a factor variable
     for the film rating. Why is this appropriate?
 
-<!-- -->
+```{r exercise-3a}
+# Load pixar_films dataset
+pixar_films <- read_csv("data/pixar_films.csv")
+
+# Clean dataset by removing films without a title
+pixar_films_clean <- pixar_films %>%
+  filter(!is.na(film))
+
+# Inspect film_rating variable
+unique(pixar_films_clean$film_rating)
+
+# Count of each rating
+table(pixar_films_clean$film_rating)
+
+# Create factor variable for film_rating
+pixar_films_clean <- pixar_films_clean %>%
+  mutate(film_rating_factor = factor(film_rating, 
+                                      levels = c("G", "PG", "Not Rated", "N/A"),
+                                      ordered = TRUE))
+
+# Display structure to show factor variable
+summary(pixar_films_clean$film_rating_factor)
+```
+
+
+**Possible values and their meanings:**
+
+- **G**: General Audiences. All ages admitted
+- **PG**: Parental Guidance Suggested. Some material may not be suitable for children
+- **Not Rated**: Film has not been rated by the MPAA
+- **N/A**: Rating information not available
+
+**Why a factor variable is appropriate:**
+
+Creating a factor variable for film ratings is appropriate because:
+
+1. Film ratings are categorical data with a limited set of discrete values
+2. The ratings have a natural ordering (G < PG in terms of content restrictions)
+3. Using a factor prevents invalid rating values and therefore ensures data integrity
+4. It makes analysis and visualization more easy as R will treat them as distinct categories rather than character strings
+
+> Note: I inclued "Not Rated" in the factor variable because it exists in the CSV. It was filtered out by chance because the movie also has no title.
 
 b)  Inspect the film titles manually. Which films form a film series? A
     film series can be identified by a common word in the titles of the
