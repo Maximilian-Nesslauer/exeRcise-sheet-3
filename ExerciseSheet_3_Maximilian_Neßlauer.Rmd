@@ -83,7 +83,7 @@ a)  Create a new repository on GitHub in your account named
     we are able to see it for grading. Add the link to the repository
     below:
 
-    [exeRcise-sheet-3 public GitHub Repository](https://github.com/Maximilian-Nesslauer/exeRcise-sheet-3)
+    [Maximilian Neßlauer exeRcise-sheet-3 public GitHub Repository](https://github.com/Maximilian-Nesslauer/exeRcise-sheet-3)
 
 b)  Push your code to this new repository by copying and executing the
     snippet on github listed under
