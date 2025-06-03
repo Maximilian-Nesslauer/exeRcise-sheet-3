@@ -316,6 +316,100 @@ e)  Use R to answer your chosen question. Please limit your analysis to
     the functions and techniques we have covered so far in the course.
     You are **not expected** to use advanced statistical models or
     external packages which haven't been introduced.
+
+```{r exercise-4e}
+# Load the internet coverage dataset
+internet_coverage <- read_csv("data/Population covered by the internet - Internet World Stats (2019).csv")
+
+# Rename columns for easier handling
+internet_coverage <- internet_coverage %>%
+  rename(
+    country = Entity,
+    year = Year,
+    coverage_percent = `Share of population covered by the internet (in %)`
+  )
+
+# Create coverage level categories
+internet_coverage <- internet_coverage %>%
+  mutate(
+    coverage_level = case_when(
+      coverage_percent < 10 ~ "Very Low (<10%)",
+      coverage_percent >= 10 & coverage_percent < 25 ~ "Low (10-25%)",
+      coverage_percent >= 25 & coverage_percent < 50 ~ "Medium (25-50%)",
+      coverage_percent >= 50 & coverage_percent < 75 ~ "High (50-75%)",
+      coverage_percent >= 75 ~ "Very High (≥75%)"
+    ),
+    coverage_level = factor(coverage_level, 
+                           levels = c("Very Low (<10%)", "Low (10-25%)", 
+                                    "Medium (25-50%)", "High (50-75%)", 
+                                    "Very High (≥75%)"),
+                           ordered = TRUE)
+  )
+
+# Summary statistics by coverage level
+coverage_summary <- internet_coverage %>%
+  group_by(coverage_level) %>%
+  summarise(
+    count = n(),
+    mean_coverage = mean(coverage_percent),
+    min_coverage = min(coverage_percent),
+    max_coverage = max(coverage_percent)
+  )
+
+print(coverage_summary)
+
+# Identify top 10 and bottom 10 countries
+top_countries <- internet_coverage %>%
+  arrange(desc(coverage_percent)) %>%
+  head(10)
+
+bottom_countries <- internet_coverage %>%
+  arrange(coverage_percent) %>%
+  head(10)
+
+cat("\nTop 10 African countries by internet coverage:\n")
+print(top_countries %>% select(country, coverage_percent))
+
+cat("\nBottom 10 African countries by internet coverage:\n")
+print(bottom_countries %>% select(country, coverage_percent))
+
+# Calculate regional statistics (grouping by sub-regions based on geographic patterns)
+# Note: This is a simplified regional grouping based on observable patterns
+internet_coverage <- internet_coverage %>%
+  mutate(
+    region = case_when(
+      country %in% c("Algeria", "Egypt", "Libya", "Morocco", "Tunisia", "Sudan") ~ "North Africa",
+      country %in% c("Kenya", "Ethiopia", "Tanzania", "Uganda", "Rwanda", "Burundi", 
+                    "Somalia", "Djibouti", "Eritrea") ~ "East Africa",
+      country %in% c("Nigeria", "Ghana", "Senegal", "Mali", "Burkina Faso", "Niger",
+                    "Benin", "Togo", "Cote d'Ivoire", "Guinea", "Guinea-Bissau",
+                    "Liberia", "Sierra Leone", "Gambia", "Mauritania", "Cape Verde") ~ "West Africa",
+      country %in% c("Cameroon", "Gabon", "Congo", "Democratic Republic of Congo",
+                    "Central African Republic", "Chad", "Equatorial Guinea",
+                    "Sao Tome and Principe") ~ "Central Africa",
+      country %in% c("South Africa", "Botswana", "Namibia", "Zimbabwe", "Zambia",
+                    "Angola", "Mozambique", "Malawi", "Lesotho", "Swaziland",
+                    "Madagascar", "Mauritius", "Comoros", "Seychelles", "Mayotte",
+                    "Reunion", "Saint Helena") ~ "Southern Africa",
+      TRUE ~ "Other"
+    )
+  )
+
+# Regional summary
+regional_summary <- internet_coverage %>%
+  filter(region != "Other") %>%
+  group_by(region) %>%
+  summarise(
+    countries = n(),
+    mean_coverage = mean(coverage_percent),
+    median_coverage = median(coverage_percent),
+    sd_coverage = sd(coverage_percent)
+  ) %>%
+  arrange(desc(mean_coverage))
+
+cat("\nInternet coverage by African region:\n")
+print(regional_summary)
+```
 f)  Create a meaningful plot / figure with the dataset. Make sure to
     provide a figure caption (via the chunk options / Rmarkdown) and
     correctly label the figure.
