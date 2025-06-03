@@ -243,6 +243,51 @@ d)  Choose one of the variables representing the public response and
     What do you notice when comparing the scores of the films in a
     series? Do you see any patterns?
 
+```{r exercise-3d, fig.cap="Rotten Tomatoes scores for Pixar film series, ordered by release date within each series"}
+
+# Filter for films that belong to film_series and have rotten_tomatoes scores
+series_films <- pixar_combined %>%
+  filter(film %in% film_series$film_title) %>%
+  left_join(film_series, by = c("film" = "film_title")) %>%
+  filter(!is.na(rotten_tomatoes)) %>%
+  arrange(series_name, release_date)
+
+# Create ordered factor for films to maintain release date order within series
+series_films <- series_films %>%
+  mutate(film_ordered = factor(film, levels = unique(film)))
+
+# Create bar plot
+ggplot(series_films, aes(x = series_name, y = rotten_tomatoes, fill = film_ordered)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.8) +
+  labs(title = "Rotten Tomatoes Scores for Pixar Film Series",
+       x = "Film Series",
+       y = "Rotten Tomatoes Score (%)",
+       fill = "Film") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        legend.position = "bottom") +
+  scale_y_continuous(limits = c(0, 100)) +
+  guides(fill = guide_legend(nrow = 3))
+```
+
+**Patterns observed in film series scores:**
+
+1. **Toy Story Series**: Shows exceptional consistency with all four films achieving perfect or near-perfect scores close to 100%. This shows no decline in critical reception.
+
+2. **Cars Series**: Shows the most dramatic variation of any Pixar series as Cars starts at ~74%, falls to just ~40% with Cars 2 (the lowest-rated film of the pixar films), and then recovers to ~69% with Cars 3.
+   
+3. **Finding Series**: Both films achieve high scores, with Finding Dory just 5 points below finding Nemo.
+
+4. **Incredibles Series**: Both fimils maintain a very high reception despite the 14 year gap between films.
+
+5. **Monsters Series**: A more noticeable decline from Monsters to the prequel is visible, representing a 16-point drop.
+
+**General patterns:**
+
+- Three series (Toy Story, Finding, Incredibles) maintain high scores above 90%
+- Most sequels/prequels show some decline from the original, with the notable exception of Toy Story 2
+- Despite declines, all films in these series except Cars 2 score very high, demonstrating Pixar's generally strong quality
+
 ## Exercise 4: Open Analysis (4 points)
 
 This exercise is a bit more open-ended. You can choose any dataset from
