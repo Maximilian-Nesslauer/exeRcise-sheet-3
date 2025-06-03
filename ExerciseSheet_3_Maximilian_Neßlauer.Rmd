@@ -300,8 +300,8 @@ a)  Go to <https://github.com/owid/owid-datasets/tree/master/datasets>
 b)  Download the dataset and track it in git.
 c)  Put the name / title of the dataset and a link to it below.
 
--   Dataset Name: ...
--   Link: <https://github.com/owid/owid-datasets/>...
+-   Dataset Name: Population covered by the internet - Internet World Stats (2019)
+-   Link: [Dataset "Population covered by the internet - Internet World Stats (2019)" on GitHub](https://github.com/owid/owid-datasets/blob/6155d4ca1ea14ef30e753010a25521eeb416e8a2/datasets/Population%20covered%20by%20the%20internet%20-%20Internet%20World%20Stats%20(2019)/Population%20covered%20by%20the%20internet%20-%20Internet%20World%20Stats%20(2019).csv)
 
 d)  Come up with a (research) question you want to answer with the data
     and briefly explain why you believe this is an interesting question
